@@ -9,7 +9,7 @@ go_library(
     srcs = ["webdav.go"],
     importpath = "github.com/rockwotj/godav",
     visibility = ["//visibility:private"],
-    deps = ["@org_golang_x_net//webdav:go_default_library"],
+    deps = ["@org_golang_x_net//webdav"],
 )
 
 go_binary(

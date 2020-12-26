@@ -1,7 +1,10 @@
 package main
 
 import (
+	"flag"
+	"fmt"
 	"golang.org/x/net/webdav"
+	"log"
 	"net/http"
 )
 
@@ -12,7 +15,9 @@ func NewWebDavServer(root string) http.Handler {
 			Prefix:     "",
 			FileSystem: webdav.Dir(root),
 			LockSystem: webdav.NewMemLS(),
-			Logger:     nil,
+			Logger: func(r *http.Request, err error) {
+				log.Println("Error serving", r.URL, "with error", err)
+			},
 		},
 	}
 }
@@ -32,6 +37,10 @@ func (h *WebDavHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
+var port = flag.Int("port", 8090, "The port to run the server on")
+var root = flag.String("root", "/tmp/", "The root directory for the server")
+
 func main() {
-	http.ListenAndServe(":8090", NewWebDavServer("/tmp/"))
+	log.Println("Starting webdav server at", *root, "on port", *port)
+	http.ListenAndServe(fmt.Sprintf(":%d", *port), NewWebDavServer(*root))
 }
