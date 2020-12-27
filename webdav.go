@@ -41,6 +41,7 @@ var port = flag.Int("port", 8090, "The port to run the server on")
 var root = flag.String("root", "/tmp/", "The root directory for the server")
 
 func main() {
+	flag.Parse()
 	log.Println("Starting webdav server at", *root, "on port", *port)
-	http.ListenAndServe(fmt.Sprintf(":%d", *port), NewWebDavServer(*root))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *port), NewWebDavServer(*root)))
 }
