@@ -1,0 +1,12 @@
+[Unit]
+Description=Simple HTTP + WebDAV server
+Documentation=http://github.com/rockwotj/godav
+After=network.target
+
+[Service]
+User=$USER
+ExecStart=$INSTALL_DIR/godav -port $PORT -root $DIR
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
